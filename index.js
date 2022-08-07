@@ -1,27 +1,27 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const { PORT, DB_CONNECTION_STRING } = require('./config')
-const db = require('./config/dbConfig')
+// const db = require('./config/dbConfig')
 const cors = require('./config/cors')
 const userController = require('./controllers/userController')
 const listController = require('./controllers/listController')
 const noteCotroller = require('./controllers/noteCotroller')
 serverOn()
 async function serverOn() {
-//   try {
-//     mongoose.connect(DB_CONNECTION_STRING, {
-//       useNewUrlParser: true,
-//       useUnifiedTopology: true,
-//     })
-//     const db = mongoose.connection
-//     db.on('error', (err) => console.log(err.message))
-//     db.once('open', () => console.log(`DB connected ${DB_CONNECTION_STRING}`))
-//     // console.log(`DB connected ${DB_CONNECTION_STRING}`)
-//   } catch (err) {
-//     console.log(err.message)
-//   }
+  try {
+    mongoose.connect(DB_CONNECTION_STRING, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    })
+    const db = mongoose.connection
+    console.log(`DB connected ${DB_CONNECTION_STRING}`)
+    // db.on('error', (err) => console.log(err.message))
+    // db.once('open', () => console.log(`DB connected ${DB_CONNECTION_STRING}`))
+  } catch (err) {
+    console.log(err.message)
+  }
   const app = express()
-  await db(app)
+//   await db(app)
 //   app.use(express.json())
   app.use(express.json({limit: '50mb'}));
     app.use(express.urlencoded({extended: true, limit: '50mb'}));
