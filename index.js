@@ -7,18 +7,18 @@ const listController = require('./controllers/listController')
 const noteCotroller = require('./controllers/noteCotroller')
 serverOn()
 async function serverOn() {
-  try {
-    mongoose.connect(DB_CONNECTION_STRING, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    })
-    const db = mongoose.connection
-    db.on('error', (err) => console.log(err.message))
-    db.once('open', () => console.log(`DB connected ${DB_CONNECTION_STRING}`))
-    // console.log(`DB connected ${DB_CONNECTION_STRING}`)
-  } catch (err) {
-    console.log(err.message)
-  }
+//   try {
+//     mongoose.connect(DB_CONNECTION_STRING, {
+//       useNewUrlParser: true,
+//       useUnifiedTopology: true,
+//     })
+//     const db = mongoose.connection
+//     db.on('error', (err) => console.log(err.message))
+//     db.once('open', () => console.log(`DB connected ${DB_CONNECTION_STRING}`))
+//     // console.log(`DB connected ${DB_CONNECTION_STRING}`)
+//   } catch (err) {
+//     console.log(err.message)
+//   }
   const app = express()
 //   app.use(express.json())
   app.use(express.json({limit: '50mb'}));
@@ -29,6 +29,9 @@ async function serverOn() {
   app.use('/user', userController)
   app.use('/list', listController)
   app.use('/note', noteCotroller)
+  app.get('/', (req, res) => res.status(404).json('home'))
+  app.get('/about', (req, res) => res.status(404).json('CREATE'))
+  app.get('*', (req, res) => res.status(404).json('ABOut'))
   app.get('*', (req, res) => res.status(404).json('not found!!!!!!!!!!!'))
 
 
