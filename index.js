@@ -30,7 +30,7 @@ async function serverOn() {
 
 
   app.listen(PORT, () => {
-    console.log(`Server is ON http://localhost:${PORT}`)
+    console.log(`Server is ON port: ${PORT}`)
   })
 }
 
