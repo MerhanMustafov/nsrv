@@ -21,6 +21,7 @@ route.get('/getAllUsersList/:userId', async (req, res) => {
     }
 })
 
+
 route.get('/getOneList/:listid', async (req, res) => {
     try{
         const list = await getOneList(req.params.listid)

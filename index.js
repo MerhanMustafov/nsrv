@@ -1,6 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const { PORT, DB_CONNECTION_STRING } = require('./config')
+const db = require('./config/dbConfig')
 const cors = require('./config/cors')
 const userController = require('./controllers/userController')
 const listController = require('./controllers/listController')
@@ -20,6 +21,7 @@ async function serverOn() {
 //     console.log(err.message)
 //   }
   const app = express()
+  await db(app)
 //   app.use(express.json())
   app.use(express.json({limit: '50mb'}));
     app.use(express.urlencoded({extended: true, limit: '50mb'}));
