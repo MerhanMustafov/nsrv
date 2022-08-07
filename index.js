@@ -31,10 +31,7 @@ async function serverOn() {
   app.use('/user', userController)
   app.use('/list', listController)
   app.use('/note', noteCotroller)
-  app.get('/', (req, res) => res.status(404).json('home'))
-  app.get('/about', (req, res) => res.status(404).json('CREATE'))
-  app.get('*', (req, res) => res.status(404).json('ABOut'))
-  app.get('*', (req, res) => res.status(404).json('not found!!!!!!!!!!!'))
+  app.get('*', (req, res) => res.status(404).json('Not found !'))
 
 
   app.listen(PORT, () => {
