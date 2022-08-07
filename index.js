@@ -12,7 +12,10 @@ async function serverOn() {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })
-    console.log(`DB connected ${DB_CONNECTION_STRING}`)
+    const db = mongoose.connection
+    db.on('error', (err) => console.log(err.message))
+    db.once('open', () => console.log(`DB connected ${DB_CONNECTION_STRING}`))
+    // console.log(`DB connected ${DB_CONNECTION_STRING}`)
   } catch (err) {
     console.log(err.message)
   }
