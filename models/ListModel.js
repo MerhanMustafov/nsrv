@@ -5,7 +5,6 @@ const listSchema = new Schema({
     listimg: {type: String},
     ownerid: {type: String, required: true},
     notes: [{type: Schema.Types.ObjectId, ref: 'Note'}],
-    // userNotes: [{type: Schema.Types.ObjectId, ref: 'Note'}]
 
 })
 

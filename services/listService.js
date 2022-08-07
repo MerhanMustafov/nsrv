@@ -10,7 +10,6 @@ async function getAllLists(userId) {
   return await List.find({ ownerid: userId }).populate('notes')
 }
 async function getOneList(listid) {
-    console.log(listid)
   return await List.find({ _id: listid }).populate('notes')
 }
 
