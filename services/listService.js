@@ -1,9 +1,13 @@
 const List = require('../models/ListModel')
 const Note = require('../models/NoteModel')
-async function createListRecord(noteData) {
+const User = require('../models/UserModel')
+async function createListRecord(noteData, userid) {
   const list = new List(noteData)
-   await list.save()
-   return list
+  await list.save()
+  const user = await User.findById(userid)
+  user.lists.push(list._id)
+  await user.save()
+  return list
 }
 
 async function getAllLists(userId) {
@@ -17,8 +21,13 @@ async function updateListTitle(newData, listid) {
   return await List.findOneAndUpdate({ _id: listid }, newData)
 }
 
-async function deleteList(listid) {
+async function deleteList(listid, userid) {
   const list = await List.findById(listid)
+  const user = await User.findById(userid)
+
+  const filtered = user.lists.filter((id) => id.toString() !== listid)
+  user.lists = filtered
+  await user.save()
 
   for (let i = 0; i < list.notes.length; i++) {
     await deleteNoteRecord(list.notes[i])

@@ -29,7 +29,7 @@ async function serverOn() {
   app.get('*', (req, res) => res.status(404).json('Not found !'))
 
   app.listen(PORT, () => {
-    console.log(`Server is ON !`)
+    console.log(`Server NSRV is ON !`)
   })
 }
 

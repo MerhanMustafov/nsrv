@@ -54,6 +54,8 @@ function generateToken(userData){
     return {
     userId: userData._id,
     username: userData.username,
+    // img: userData.img,
+    gender: userData.gender,
     accessToken: jwt.sign(
       { hashedPassword: userData.hashedPassword },
       tokenSecret,
@@ -66,7 +68,7 @@ async function generateUserDataDbFormat(userData){
     return {
         username: userData.username.trim(),
         hashedPassword: hashedPassword,
-        img: userData.img,
+        // img: userData.img,
         gender: userData.gender,
         userNoteSections: [],
         userNotes: []
