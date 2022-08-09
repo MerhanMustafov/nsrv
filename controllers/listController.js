@@ -2,9 +2,9 @@ const route = require('express').Router()
 const {isAuth, isOwner} = require('../middlewares/guards')
 const {createListRecord, getAllLists, updateListTitle, deleteList, getOneList} = require('../services/listService')
 
-route.post('/create', async (req, res) => {
+route.post('/create/:userid', async (req, res) => {
     try{
-    const created = await createListRecord(req.body)
+    const created = await createListRecord(req.body, req.params.userid)
         res.status(200).json(created)
     }catch(err){
         const errors = {errors: err.message}
@@ -42,9 +42,9 @@ route.put('/update/:listid', async (req, res) => {
     }
 })
 
-route.delete('/delete/:listid', async (req, res) => {
+route.delete('/delete/:listid/:userid', async (req, res) => {
     try{
-        const deleted = await deleteList(req.params.listid)
+        const deleted = await deleteList(req.params.listid, req.params.userid)
         res.status(200).json(deleted)
     }catch(err){
         res.status(404).json(err.message)
