@@ -13,6 +13,24 @@ route.get('/get/:userId', async (req, res) => {
         res.status(200).json(token)
     }
 })
+route.get('/getUserwithLists/:userId', async (req, res) => {
+    try{
+        const rowUserData = await userService.getUserByIdWithLists(req.params.userId)
+        const userClientData = generateUserDataClientFormat(rowUserData)
+        res.status(200).json(userClientData)
+    }catch(err){
+        res.status(404).json(err.message)
+    }
+
+})
+route.get('/getuser/:username', async (req, res) => {
+    try{
+        const user = await userService.getByName(req.params.username)
+        res.status(200).json(user)
+    }catch(err){
+        res.status(404).json(err.message)
+    }
+})
 
 route.post('/register', async (req, res) => {
   try {
@@ -49,6 +67,26 @@ route.post('/login', async (req, res) => {
         res.status(404).json(errors)
     }
 })
+
+route.get('/verify/:token' , async (req, res) => {
+    try {
+        const token = req.params.token
+        jwt.verify(token, tokenSecret)
+        res.status(200).json(token)
+    }catch(err){
+        res.status(401).json('Not authorized !')
+    }
+
+})
+
+function generateUserDataClientFormat(userData){
+    return {
+        _id: userData._id,
+        username: userData.username, 
+        gender: userData.gender, 
+        lists: userData.lists
+    }
+}
 
 function generateToken(userData){
     return {
