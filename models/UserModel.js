@@ -5,7 +5,7 @@ const userSchema = new Schema({
     hashedPassword: {type: String, required: [true, 'password is required!']},
     // img: {type: String},
     gender: {type: String, required: [true, 'gender is required!']},
-    lists: [{type: Schema.Types.ObjectId, ref: 'List'}],
+    lists: [{type: Schema.Types.ObjectId, ref: 'List'}]
     // friends: [{type: Schema.Types.ObjectId, ref: 'Note'}]
 
 })
