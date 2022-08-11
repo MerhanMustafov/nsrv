@@ -5,11 +5,12 @@ const {createListRecord, getAllLists, updateListTitle, deleteList, getOneList} =
 route.post('/create/:userid', async (req, res) => {
     try{
     const created = await createListRecord(req.body, req.params.userid)
-        res.status(200).json(created)
+    res.status(200).json(created)
     }catch(err){
         const errors = {errors: err.message}
     }
 })
+
 route.get('/getAllUsersList/:userId', async (req, res) => {
     try{
     const list = await getAllLists(req.params.userId)
