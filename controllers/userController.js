@@ -1,7 +1,7 @@
 const route = require('express').Router()
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const tokenSecret = 'asdf123 321fdsa'
+const {TOKEN_SECRET} = require('../config')
 const { ...userService } = require('../services/userService')
 
 route.get('/get/:userId', async (req, res) => {
@@ -96,7 +96,7 @@ function generateToken(userData){
     gender: userData.gender,
     accessToken: jwt.sign(
       { hashedPassword: userData.hashedPassword },
-      tokenSecret,
+      TOKEN_SECRET,
     ),
   }
 }
