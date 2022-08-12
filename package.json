@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "env-cmd -f .env.prod nodemon index.js",
+    "start:dev": "env-cmd -f .env.dev nodemon index.js",
+    "start:prod": "env-cmd -f .env.prod nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -12,6 +14,8 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "dotenv": "^16.0.1",
+    "env-cmd": "^10.1.0",
     "express": "^4.18.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.5.0",

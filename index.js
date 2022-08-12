@@ -1,3 +1,5 @@
+
+require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const { PORT, DB_CONNECTION_STRING } = require('./config')
