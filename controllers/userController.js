@@ -1,7 +1,7 @@
 const route = require('express').Router()
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const {TOKEN_SECRET} = require('../config')
+const {TOKEN_SECRET} = require('../config/index')
 const { ...userService } = require('../services/userService')
 
 route.get('/get/:userId', async (req, res) => {
@@ -71,7 +71,7 @@ route.post('/login', async (req, res) => {
 route.get('/verify/:token' , async (req, res) => {
     try {
         const token = req.params.token
-        jwt.verify(token, tokenSecret)
+        jwt.verify(token, TOKEN_SECRET)
         res.status(200).json(token)
     }catch(err){
         res.status(401).json('Not authorized !')
