@@ -14,7 +14,6 @@ route.get('/getNote/:noteid', async (req, res) => {
     const noteid = req.params.noteid
     try{
         const note = await getNoteById(noteid)
-        console.log(note, 'Get NOTE by id')
         res.status(200).json(note)
     }catch(err){
         res.status(404).json(err.message)

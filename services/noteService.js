@@ -34,7 +34,7 @@ async function deleteNoteRecord(noteid, listid){
     const list = await List.findById(listid)
     const modified =  list.notes.filter(objId => objId.toString() !== noteid)
     list.notes = modified
-    list.save()
+    await list.save()
     await Note.findByIdAndDelete(noteid)
     return list
 
