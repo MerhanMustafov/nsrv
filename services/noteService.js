@@ -16,6 +16,11 @@ async function createNoteRecord(noteData) {
   }
 }
 
+async function getNoteById(noteid){
+    const note = await Note.findById(noteid).populate({path: 'comments'})
+    return note
+}
+
 async function getAllNoteRecords(listid){
     const notes = await Note.find({listid: listid})
     return notes
@@ -29,10 +34,10 @@ async function deleteNoteRecord(noteid, listid){
     const list = await List.findById(listid)
     const modified =  list.notes.filter(objId => objId.toString() !== noteid)
     list.notes = modified
-    list.save()
+    await list.save()
     await Note.findByIdAndDelete(noteid)
     return list
 
 }
 
-module.exports = { createNoteRecord, updateNoteRecord, deleteNoteRecord, getAllNoteRecords }
+module.exports = { createNoteRecord, updateNoteRecord, deleteNoteRecord, getAllNoteRecords, getNoteById }

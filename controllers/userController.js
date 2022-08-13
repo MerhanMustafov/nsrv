@@ -26,11 +26,13 @@ route.get('/getUserwithLists/:userId', async (req, res) => {
 route.get('/getuser/:username', async (req, res) => {
     try{
         const user = await userService.getByName(req.params.username)
-        res.status(200).json(user)
+        const userClientFormat = user && user.map(userData => generateUserDataClientFormat(userData))
+        res.status(200).json(userClientFormat)
     }catch(err){
         res.status(404).json(err.message)
     }
 })
+
 
 route.post('/register', async (req, res) => {
   try {

@@ -7,6 +7,7 @@ const cors = require('./config/cors')
 const userController = require('./controllers/userController')
 const listController = require('./controllers/listController')
 const noteCotroller = require('./controllers/noteCotroller')
+const commentCotroller = require('./controllers/commentController')
 serverOn()
 async function serverOn() {
   try {
@@ -28,6 +29,7 @@ async function serverOn() {
   app.use('/user', userController)
   app.use('/list', listController)
   app.use('/note', noteCotroller)
+  app.use('/comment', commentCotroller)
   app.get('*', (req, res) => res.status(404).json('Not found !'))
 
   app.listen(PORT, () => {

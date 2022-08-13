@@ -1,10 +1,20 @@
 const route = require('express').Router()
-const {createNoteRecord, updateNoteRecord, deleteNoteRecord, getAllNoteRecords} = require('../services/noteService')
+const {createNoteRecord, updateNoteRecord, deleteNoteRecord, getAllNoteRecords, getNoteById} = require('../services/noteService')
 
 route.get('/getAll/:listid', async (req, res) =>{
     try{
         const notes = await getAllNoteRecords(req.params.listid)
         res.status(200).json(notes)
+    }catch(err){
+        res.status(404).json(err.message)
+    }
+})
+
+route.get('/getNote/:noteid', async (req, res) => {
+    const noteid = req.params.noteid
+    try{
+        const note = await getNoteById(noteid)
+        res.status(200).json(note)
     }catch(err){
         res.status(404).json(err.message)
     }
