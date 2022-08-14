@@ -1,10 +1,18 @@
 const route = require('express').Router()
+const {uploadImageToCloudinary, deleteImageFromCloudinary} = require('./coudinary/cloudinary')
 const {isAuth, isOwner} = require('../middlewares/guards')
 const {createListRecord, getAllLists, updateListTitle, deleteList, getOneList} = require('../services/listService')
 
 route.post('/create/:userid', async (req, res) => {
+    const listData = req.body
+    if(listData.rowListImg){
+        const result = await uploadImageToCloudinary(req.cld, listData.rowListImg)
+        listData['img_url'] = result.secure_url
+        listData['img_path'] = result.public_id
+        delete listData.rowListImg
+    }
     try{
-    const created = await createListRecord(req.body, req.params.userid)
+        const created = await createListRecord(listData, req.params.userid)
     res.status(200).json(created)
     }catch(err){
         const errors = {errors: err.message}
@@ -46,6 +54,7 @@ route.put('/update/:listid', async (req, res) => {
 route.delete('/delete/:listid/:userid', async (req, res) => {
     try{
         const deleted = await deleteList(req.params.listid, req.params.userid)
+        await deleteImageFromCloudinary(req.cld, deleted.img_path)
         res.status(200).json(deleted)
     }catch(err){
         res.status(404).json(err.message)

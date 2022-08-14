@@ -1,6 +1,8 @@
+const User = require('../models/UserModel')
 const List = require('../models/ListModel')
 const Note = require('../models/NoteModel')
-const User = require('../models/UserModel')
+const Comment = require('../models/CommentModel')
+
 async function createListRecord(noteData, userid) {
   const list = new List(noteData)
   await list.save()
@@ -22,21 +24,33 @@ async function updateListTitle(newData, listid) {
 }
 
 async function deleteList(listid, userid) {
-  const list = await List.findById(listid)
   const user = await User.findById(userid)
-
   const filtered = user.lists.filter((id) => id.toString() !== listid)
   user.lists = filtered
   await user.save()
 
+
+  const list = await List.findById(listid)
+
+
   for (let i = 0; i < list.notes.length; i++) {
-    await deleteNoteRecord(list.notes[i])
+    const note = await Note.findById(list.notes[i]).populate('comments')
+    for (let i = 0; i < note.comments.length; i++){
+        deleteComment(note.comments[i])
+    }
+    deleteNoteRecord(list.notes[i])
   }
   await List.findByIdAndDelete(listid)
 
-  async function deleteNoteRecord(noteid) {
+  
+  return list
+}
+
+async function deleteNoteRecord(noteid) {
     await Note.findByIdAndDelete(noteid)
   }
+async function deleteComment(commentid) {
+    await Comment.findByIdAndDelete(commentid)
 }
 
 async function addNote(noteId, listId) {
