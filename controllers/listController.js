@@ -54,7 +54,7 @@ route.put('/update/:listid', async (req, res) => {
 route.delete('/delete/:listid/:userid', async (req, res) => {
     try{
         const deleted = await deleteList(req.params.listid, req.params.userid)
-        if(deleted.img_path){
+        if(deleted.list_img_path){
             await deleteImageFromCloudinary(req.cld, deleted.img_path)
         }
         res.status(200).json(deleted)
