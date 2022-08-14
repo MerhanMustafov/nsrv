@@ -1,5 +1,5 @@
 async function uploadImageToCloudinary(cld, imgFile){
-    return await cld.uploader.upload(imgFile, {folder: 'imgs', height: 1500, width:1500, crop: "lfill"}, (err, result) => {
+    return await cld.uploader.upload(imgFile, {folder: 'imgs', height: 1000, width:1500, crop: "lfill"}, (err, result) => {
         if(err){throw new Error(err.message)}
         else{return result}
     })
