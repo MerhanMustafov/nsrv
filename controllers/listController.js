@@ -5,11 +5,11 @@ const {createListRecord, getAllLists, updateListTitle, deleteList, getOneList} =
 
 route.post('/create/:userid', async (req, res) => {
     const listData = req.body
-    if(listData.rowListImg){
-        const result = await uploadImageToCloudinary(req.cld, listData.rowListImg)
-        listData['img_url'] = result.secure_url
-        listData['img_path'] = result.public_id
-        delete listData.rowListImg
+    if(listData.rowImg){
+        const result = await uploadImageToCloudinary(req.cld, listData.rowImg)
+        listData['list_img_url'] = result.secure_url
+        listData['list_img_path'] = result.public_id
+        delete listData.rowImg
     }
     try{
         const created = await createListRecord(listData, req.params.userid)
@@ -54,7 +54,9 @@ route.put('/update/:listid', async (req, res) => {
 route.delete('/delete/:listid/:userid', async (req, res) => {
     try{
         const deleted = await deleteList(req.params.listid, req.params.userid)
-        await deleteImageFromCloudinary(req.cld, deleted.img_path)
+        if(deleted.img_path){
+            await deleteImageFromCloudinary(req.cld, deleted.img_path)
+        }
         res.status(200).json(deleted)
     }catch(err){
         res.status(404).json(err.message)

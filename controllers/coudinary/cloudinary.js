@@ -5,6 +5,13 @@ async function uploadImageToCloudinary(cld, imgFile){
     })
 
 }
+async function uploadProfileImageToCloudinary(cld, imgFile){
+    return await cld.uploader.upload(imgFile, {folder: 'imgs', height: 250, width:250, crop: "lfill"}, (err, result) => {
+        if(err){throw new Error(err.message)}
+        else{return result}
+    })
+
+}
 
 async function deleteImageFromCloudinary(cld, image_public_id){
     await cld.api.delete_resources([image_public_id], (err, result) => {
@@ -15,5 +22,6 @@ async function deleteImageFromCloudinary(cld, image_public_id){
 
 module.exports = {
     uploadImageToCloudinary,
-    deleteImageFromCloudinary
+    deleteImageFromCloudinary,
+    uploadProfileImageToCloudinary
 }
