@@ -1,5 +1,5 @@
 const route = require('express').Router()
-const {createComment, deleteComment} = require('../services/commentService')
+const {createComment, updateComment, deleteComment} = require('../services/commentService')
 
 route.post('/create/:noteid', async (req, res) => {
     const noteid= req.params.noteid
@@ -8,6 +8,15 @@ route.post('/create/:noteid', async (req, res) => {
         res.status(200).json(created)
     }catch(err){
         res.status(400).json(err.message)
+    }
+})
+
+route.patch(`/update/:commentid`, async (req, res) => {
+    try{
+        const updated = await updateComment(req.body, req.params.commentid)
+        res.status(200).json(updated)
+    }catch(err){
+        res.status(400).json({errors: [...err.message]})
     }
 })
 

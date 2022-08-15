@@ -10,6 +10,11 @@ async function createComment(data, noteid){
     return comment
 }
 
+async function updateComment(data, commentid){
+    const updated = await Comment.findByIdAndUpdate(commentid, data)
+    return updated
+}
+
 async function deleteComment(commentid, noteid){
     const note = await Note.findById(noteid)
     const modified =  note.comments.filter(objId => objId.toString() !== commentid)
@@ -20,4 +25,4 @@ async function deleteComment(commentid, noteid){
 }
 
 
-module.exports = {createComment, deleteComment}
+module.exports = {createComment, updateComment, deleteComment}
