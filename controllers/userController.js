@@ -6,12 +6,16 @@ const { ...userService } = require('../services/userService')
 const { uploadProfileImageToCloudinary } = require('./coudinary/cloudinary')
 
 route.get('/get/:userId', async (req, res) => {
-  const existing = await userService.getUserById(req.params.userId)
-  if (!existing) {
-    res.status(404).json(null)
-  } else {
-    const token = generateToken(existing)
-    res.status(200).json(token)
+  try {
+    const existing = await userService.getUserById(req.params.userId)
+    if (!existing) {
+      res.status(404).json(null)
+    } else {
+      const token = generateToken(existing)
+      res.status(200).json(token)
+    }
+  } catch (err) {
+    res.status(404).json({ error: err.message })
   }
 })
 route.get('/getUserwithLists/:userId', async (req, res) => {
@@ -28,7 +32,8 @@ route.get('/getUserwithLists/:userId', async (req, res) => {
 route.get('/getuser/:username', async (req, res) => {
   try {
     const user = await userService.getByName(req.params.username)
-    const userClientFormat = user && user.map((userData) => generateUserDataClientFormat(userData))
+    const userClientFormat =
+      user && user.map((userData) => generateUserDataClientFormat(userData))
     res.status(200).json(userClientFormat)
   } catch (err) {
     res.status(404).json(err.message)
@@ -89,7 +94,7 @@ route.get('/verify/:token', async (req, res) => {
     jwt.verify(token, TOKEN_SECRET)
     res.status(200).json(token)
   } catch (err) {
-    res.status(401).json('Not authorized !')
+    res.status(401).json({error:'Not authorized !'})
   }
 })
 

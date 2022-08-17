@@ -7,6 +7,7 @@ const userSchema = new Schema({
     profile_img_path: {type: String},
     gender: {type: String, required: [true, 'gender is required!']},
     lists: [{type: Schema.Types.ObjectId, ref: 'List'}]
+
     // friends: [{type: Schema.Types.ObjectId, ref: 'Note'}]
 
 })
