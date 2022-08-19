@@ -13,7 +13,6 @@ const commentCotroller = require('./controllers/commentController')
 serverOn()
 
 async function serverOn() {
-    console.log(process.env.ORIGIN)
   try {
     mongoose.connect(DB_CONNECTION_STRING, {
       useNewUrlParser: true,
