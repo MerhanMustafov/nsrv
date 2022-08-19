@@ -35,6 +35,7 @@ async function serverOn() {
   app.use('/note', noteCotroller)
   app.use('/comment', commentCotroller)
   app.get('*', (req, res) => res.status(404).json('Not found !'))
+  
 
   app.listen(PORT, () => {
     console.log(`Server NSRV is ON !`)
