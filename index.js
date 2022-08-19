@@ -11,6 +11,7 @@ const listController = require('./controllers/listController')
 const noteCotroller = require('./controllers/noteCotroller')
 const commentCotroller = require('./controllers/commentController')
 serverOn()
+
 async function serverOn() {
   try {
     mongoose.connect(DB_CONNECTION_STRING, {
@@ -37,7 +38,9 @@ async function serverOn() {
 
   app.listen(PORT, () => {
     console.log(`Server NSRV is ON !`)
+    console.log(`mode: ${process.env.MODE}`)
   })
+
 }
 
 // db.on('error', (err) => console.log(err.message))

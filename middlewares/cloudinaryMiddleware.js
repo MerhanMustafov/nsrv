@@ -1,8 +1,8 @@
 const cld = require('cloudinary').v2
 cld.config({
-    cloud_name: 'ncdnstorage', 
-    api_key: '848844145694647', 
-    api_secret: 'eMV-IuhQYF-Vxe-27wj6mgcvfI4',
+    cloud_name: process.env.CLD_CLOUD_NAME, 
+    api_key: process.env.CLD_API_KEY, 
+    api_secret: process.env.CLD_API_SECRET,
     secure: true
 })
 
