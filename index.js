@@ -29,7 +29,7 @@ async function serverOn() {
   const app = express()
   const server = http.createServer(app)
   const io = new Server(server, {
-    cors: { origin: [process.env.CLIENT_BASE_URL] },
+    cors: { origin: [process.env.CLIENT_BASE_URL_WS] },
   })
 
   app.use(cloudinary())
