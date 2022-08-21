@@ -57,8 +57,10 @@ async function serverOn() {
   });
   })
 
+    console.log(PORT, 'PORT o')
+    console.log(process.env, 'PROCESS.env')
   server.listen(PORT, () => {
-    console.log(`Server NSRV is ON !`)
+    console.log(`Server NSRV is ON ${PORT}!`)
     console.log(`mode: ${process.env.MODE}`)
   })
 }
