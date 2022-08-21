@@ -44,12 +44,16 @@ async function serverOn() {
   app.get('*', (req, res) => res.status(404).json('Not found !'))
 
   io.on('connection', (socket) => {
+    console.log('user connected !');
     socket.on('server-refresh-all', (refresh) => {
       io.emit('client-refresh-all', refresh)
     })
     socket.on('server-refresh-list-title-all', (refresh) => {
       io.emit('client-refresh-list-title-all', refresh)
     })
+    socket.on('disconnect', () => {
+    console.log('user disconnected !');
+  });
   })
 
   server.listen(PORT, () => {
