@@ -29,7 +29,8 @@ async function serverOn() {
   const app = express()
   const server = http.createServer(app)
   const io = new Server(server, {
-    cors: { origin: [process.env.CLIENT_BASE_URL_WS] },
+    cors: { origin: [process.env.CLIENT_BASE_URL] },
+    transports: ['polling']
   })
 
   app.use(cloudinary())
