@@ -26,7 +26,7 @@ async function getAllLists(userId) {
 }
 async function getOneList(listid) {
   try {
-    const list = await List.find({ _id: listid }).populate('notes')
+    const list = await List.find({_id: listid}).populate('notes')
     return list
   } catch (err) {
     throw new Error('Something went wrong !')

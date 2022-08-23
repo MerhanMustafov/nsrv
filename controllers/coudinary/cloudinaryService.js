@@ -1,25 +1,27 @@
-import * as cloudinary from './cloudinary'
+const cloudinary = require('./cloudinary')
 
-async function upload(req, folder){
-    if(folder == 'list'){
-        try{
-            const [cld, imageFile, data] = [req.cld, req.body.uploadedImg, req.body]
-            const result = await cloudinary.uploadListImageToCloudinary(cld, imageFile)
-            delete data.uploadedImg
-            data['cld_list_img_url'] = result.secure_url
-            data['cld_list_img_path'] = result.public_id
-            return data
-        }catch(err){
-            throw new Error('Something went wrong while uploading image !')
-        }
-    }else if(folder == 'profile'){
-
+async function upload(req, folder) {
+  let response
+  const [cld, imageFile] = [req.cld, req.body.uploadedImg]
+  try {
+    if (folder == 'list') {
+      response = await cloudinary.uploadListImageToCloudinary(cld, imageFile)
+      req.body['cld_list_img_url'] = response.secure_url
+      req.body['cld_list_img_path'] = response.public_id
+    } else if (folder == 'profile') {
+      response = await cloudinary.uploadProfileImageToCloudinary(cld, imageFile)
+      req.body['cld_profile_img_url'] = response.secure_url
+      req.body['cld_profile_img_path'] = response.public_id
     }
+  } catch (err) {
+    throw new Error('Something went wrong while uploading image !')
+  }
+  delete req.body.uploadedImg
+  return req.body
 }
 
-async function del(req, dbData, clData){
-    await cloudinary.deleteImageFromCloudinary(req.cld, dbData.cld_list_img_path)
+async function del(req, data) {
+  await cloudinary.deleteImageFromCloudinary(req.cld, data.cld_list_img_path)
 }
 
-
-module.exports = {upload ,del}
+module.exports = { upload, del }

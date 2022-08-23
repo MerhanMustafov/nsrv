@@ -6,11 +6,11 @@ const cldService = require('./coudinary/cloudinaryService')
 
 route.post('/create/:userid', async (req, res) => {
     try{
-        let data = req.body
-        if(data.uploadedImg){
+        
+        if(req.body.uploadedImg){
             data = await cldService.upload(req, 'list')
         }
-        const created = await createListRecord(data, req.params.userid)
+        const created = await createListRecord(req.body, req.params.userid)
         res.status(200).json(created)
     }catch(err){
         const error = {error: err.message}
@@ -56,7 +56,7 @@ route.delete('/delete/:listid/:userid', async (req, res) => {
     try{
         const deleted = await deleteList(req.params.listid, req.params.userid)
         if(deleted.cld_list_img_path){
-            await cldService.del(req, deleted, null)
+            await cldService.del(req, deleted)
             // await deleteImageFromCloudinary(req.cld, deleted.cld_list_img_path)
         }
         res.status(200).json(deleted)
