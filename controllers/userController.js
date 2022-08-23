@@ -2,8 +2,8 @@ const route = require('express').Router()
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const { TOKEN_SECRET } = require('../config/index')
-const { ...userService } = require('../services/userService')
-const { uploadProfileImageToCloudinary } = require('./coudinary/cloudinary')
+const userService = require('../services/userService')
+const cldService = require('./coudinary/cloudinaryService')
 
 route.get('/get/:userId', async (req, res) => {
   try {
@@ -41,22 +41,16 @@ route.get('/getuser/:username', async (req, res) => {
 })
 
 route.post('/register', async (req, res) => {
+    let data = req.body
   try {
-    const existing = await userService.getUserByName(req.body.username)
+    const existing = await userService.getUserByName(data.username)
     if (existing) {
       throw new Error('Username already exists!')
     }
-
-    if (req.body.rowImg) {
-      const result = await uploadProfileImageToCloudinary(
-        req.cld,
-        req.body.rowImg,
-      )
-      delete req.body.rowImg
-      req.body['profile_img_url'] = result.secure_url
-      req.body['profile_img_path'] = result.public_id
+    if (data.uploadedImg) {
+        data = await cldService.upload(req, 'profile')
     }
-    const userData = await generateUserDataDbFormat(req.body)
+    const userData = await generateUserDataDbFormat(data)
     const createdUser = await userService.createUser(userData)
     const token = generateToken(createdUser)
 
@@ -102,7 +96,7 @@ function generateUserDataClientFormat(userData) {
   return {
     _id: userData._id,
     username: userData.username,
-    profile_img_url: userData.profile_img_url,
+    cld_profile_img_url: userData.cld_profile_img_url,
     gender: userData.gender,
     lists: userData.lists,
   }
@@ -112,7 +106,7 @@ function generateToken(userData) {
   return {
     userId: userData._id,
     username: userData.username,
-    profile_img_url: userData.profile_img_url,
+    cld_profile_img_url: userData.cld_profile_img_url,
     gender: userData.gender,
     accessToken: jwt.sign(
       { hashedPassword: userData.hashedPassword },
@@ -126,8 +120,8 @@ async function generateUserDataDbFormat(userData) {
   return {
     username: userData.username.trim(),
     hashedPassword: hashedPassword,
-    profile_img_url: userData.profile_img_url,
-    profile_img_path: userData.profile_img_path,
+    cld_profile_img_url: userData.cld_profile_img_url,
+    cld_profile_img_path: userData.cld_profile_img_path,
     gender: userData.gender,
     userNoteSections: [],
     userNotes: [],
