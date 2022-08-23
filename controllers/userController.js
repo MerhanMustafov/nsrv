@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 const { TOKEN_SECRET } = require('../config/index')
 const { ...userService } = require('../services/userService')
 const { uploadProfileImageToCloudinary } = require('./coudinary/cloudinary')
+const cldService = require('./coudinary/cloudinaryService')
 
 route.get('/get/:userId', async (req, res) => {
   try {
@@ -47,14 +48,14 @@ route.post('/register', async (req, res) => {
       throw new Error('Username already exists!')
     }
 
-    if (req.body.rowImg) {
+    if (req.body.uploadedImg) {
       const result = await uploadProfileImageToCloudinary(
         req.cld,
         req.body.rowImg,
       )
       delete req.body.rowImg
-      req.body['profile_img_url'] = result.secure_url
-      req.body['profile_img_path'] = result.public_id
+      req.body['cld_profile_img_url'] = result.secure_url
+      req.body['cld_profile_img_path'] = result.public_id
     }
     const userData = await generateUserDataDbFormat(req.body)
     const createdUser = await userService.createUser(userData)
