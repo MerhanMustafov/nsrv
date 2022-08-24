@@ -5,6 +5,7 @@ const commentSchema = new Schema({
     comment: {type: String, required: true},
     username: {type: String, required: true},
     gender: {type: String, required: true},
+    ownerimg: {type: String, required: true},
     ownerid: {type: String, required: true},
 })
 

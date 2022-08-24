@@ -41,14 +41,27 @@ route.get('/getuser/:username', async (req, res) => {
 })
 
 route.post('/register', async (req, res) => {
-    let data = req.body
+  let data = req.body
   try {
     const existing = await userService.getUserByName(data.username)
     if (existing) {
       throw new Error('Username already exists!')
     }
     if (data.uploadedImg) {
-        data = await cldService.upload(req, 'profile')
+      data = await cldService.upload(req, 'profile')
+    } else if (data.linkImg) {
+      req.body['cld_profile_img_url'] = null
+      req.body['cld_profile_img_path'] = null
+      req.body['profile_img_web_link'] = data.linkImg
+      req.body['default_image_male'] = null
+      req.body['default_image_female'] = null
+    }else{
+      req.body['cld_profile_img_url'] = null
+      req.body['cld_profile_img_path'] = null
+      req.body['profile_img_web_link'] = null
+      req.body['default_image_male'] ='https://res.cloudinary.com/ncdnstorage/image/upload/v1661350537/devImages/default/male_hnygtz.jpg'
+      req.body['default_image_female'] = 'https://res.cloudinary.com/ncdnstorage/image/upload/v1661351452/devImages/default/female_djfcvj.jpg'
+
     }
     const userData = await generateUserDataDbFormat(data)
     const createdUser = await userService.createUser(userData)
@@ -88,7 +101,7 @@ route.get('/verify/:token', async (req, res) => {
     jwt.verify(token, TOKEN_SECRET)
     res.status(200).json(token)
   } catch (err) {
-    res.status(401).json({error:'Not authorized !'})
+    res.status(401).json({ error: 'Not authorized !' })
   }
 })
 
@@ -97,6 +110,9 @@ function generateUserDataClientFormat(userData) {
     _id: userData._id,
     username: userData.username,
     cld_profile_img_url: userData.cld_profile_img_url,
+    profile_img_web_link: userData.profile_img_web_link,
+    default_image_male: userData.default_image_male,
+    default_image_female: userData.default_image_female,
     gender: userData.gender,
     lists: userData.lists,
   }
@@ -107,6 +123,9 @@ function generateToken(userData) {
     userId: userData._id,
     username: userData.username,
     cld_profile_img_url: userData.cld_profile_img_url,
+    profile_img_web_link: userData.profile_img_web_link,
+    default_image_male: userData.default_image_male,
+    default_image_female: userData.default_image_female,
     gender: userData.gender,
     accessToken: jwt.sign(
       { hashedPassword: userData.hashedPassword },
@@ -122,9 +141,17 @@ async function generateUserDataDbFormat(userData) {
     hashedPassword: hashedPassword,
     cld_profile_img_url: userData.cld_profile_img_url,
     cld_profile_img_path: userData.cld_profile_img_path,
+    profile_img_web_link: userData.profile_img_web_link,
+    default_image_male: userData.default_image_male,
+    default_image_female: userData.default_image_female,
     gender: userData.gender,
     userNoteSections: [],
     userNotes: [],
   }
 }
 module.exports = route
+// cld_profile_img_url: {type: String},
+//     cld_profile_img_path: {type: String},
+//     profile_img_web_link: {type: String},
+//     default_image_male: {type: String},
+//     default_image_female: {type: String},
