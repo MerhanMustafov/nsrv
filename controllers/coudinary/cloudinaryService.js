@@ -13,7 +13,9 @@ async function upload(req, folder) {
       response = await cloudinary.uploadProfileImageToCloudinary(cld, imageFile)
       req.body['cld_profile_img_url'] = response.secure_url
       req.body['cld_profile_img_path'] = response.public_id
-      req.body['list_img_web_link'] = null
+      req.body['profile_img_web_link'] = null
+      req.body['default_image_male'] = null
+      req.body['default_image_female'] = null
     }
   } catch (err) {
     throw new Error('Something went wrong while uploading image !')

@@ -15,7 +15,6 @@ const cldService = require('./coudinary/cloudinaryService')
 
 route.post('/create/:userid', async (req, res) => {
   try {
-    console.log(req.body)
     if (req.body.uploadedImg) {
       data = await cldService.upload(req, 'list')
     } else if (req.body.linkImg) {
@@ -23,7 +22,6 @@ route.post('/create/:userid', async (req, res) => {
       req.body['cld_list_img_path'] = null
       req.body['list_img_web_link'] = req.body.linkImg
     }
-    console.log(req.body, 'After')
     const created = await createListRecord(req.body, req.params.userid)
     res.status(200).json(created)
   } catch (err) {

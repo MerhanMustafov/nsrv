@@ -6,6 +6,8 @@ const userSchema = new Schema({
     cld_profile_img_url: {type: String},
     cld_profile_img_path: {type: String},
     profile_img_web_link: {type: String},
+    default_image_male: {type: String},
+    default_image_female: {type: String},
     gender: {type: String, required: [true, 'gender is required!']},
     lists: [{type: Schema.Types.ObjectId, ref: 'List'}]
 
