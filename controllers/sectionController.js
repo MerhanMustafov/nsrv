@@ -12,5 +12,25 @@ route.post('/create', async (req, res) => {
     }
 })
 
+route.get('/get/all/:ownerid', async (req, res) =>{
+    try{
+        const sections = await api.getAll(req.params.ownerid)
+        res.status(200).json(sections)
+    }catch (err) {
+        const error = {error: err.message}
+        res.status(400).json(error)
+    }
+})
+
+route.delete('/delete/:id', async (req, res) => {
+    try{
+        const deleted = await api.deleteOne(req.params.id)
+        console.log(deleted)
+        res.status(200).json(deleted)
+    }catch (err) {
+        const error = { error: err.message }
+        res.status(400).json(error)
+    }
+})
 
 module.exports = route

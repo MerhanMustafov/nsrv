@@ -5,8 +5,30 @@ const Comment = require('../models/CommentModel')
 
 
 async function createSection(data){
-    const section = new Section(data)
-    return await section.save()
+    try{
+        const section = new Section(data)
+        return await section.save()
+    }catch(err){
+        throw new Error(err.message)
+    }
 }
 
-module.exports = {createSection}
+
+async function getAll(ownerid){
+    try{
+        const sections = await Section.find({ownerid}).populate('lists')
+        return sections
+    }catch (err) {
+        throw new Error(err.message)
+    }
+}
+
+async function deleteOne(id){
+    try{    
+        const deleted = await Section.findByIdAndDelete(id)
+        return deleted
+    }catch (err) {
+        throw new Error(err.message)
+    }
+}
+module.exports = {createSection, getAll, deleteOne}
