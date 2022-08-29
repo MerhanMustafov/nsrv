@@ -16,7 +16,15 @@ async function createSection(data){
 
 async function getAll(ownerid){
     try{
-        const sections = await Section.find({ownerid}).populate('lists')
+        const sections = await Section.find({ownerid}).populate({path: 'lists', populate: {path: 'notes', populate: {path: 'comments'}}})
+        return sections
+    }catch (err) {
+        throw new Error(err.message)
+    }
+}
+async function getOne(sectionid){
+    try{
+        const sections = await Section.find({_id: sectionid}).populate({path: 'lists', populate: {path: 'notes', populate: {path: 'comments'}}})
         return sections
     }catch (err) {
         throw new Error(err.message)
@@ -42,4 +50,4 @@ async function deleteOne(id){
         throw new Error(err.message)
     }
 }
-module.exports = {createSection, getAll, deleteOne}
+module.exports = {createSection, getAll, getOne, deleteOne}
