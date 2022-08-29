@@ -1,4 +1,5 @@
 const User = require('../models/UserModel')
+const Section = require('../models/SectionModel')
 const List = require('../models/ListModel')
 const Note = require('../models/NoteModel')
 const Comment = require('../models/CommentModel')
@@ -7,6 +8,11 @@ async function createListRecord(noteData, userid) {
   try {
     const list = new List(noteData)
     await list.save()
+    
+    const section = await Section.findById(list.sectionid)
+    section.lists.push(list._id)
+    await section.save()
+
     const user = await User.findById(userid)
     user.lists.push(list._id)
     await user.save()

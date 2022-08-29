@@ -21,6 +21,10 @@ route.post('/create/:userid', async (req, res) => {
       req.body['cld_list_img_url'] = null
       req.body['cld_list_img_path'] = null
       req.body['list_img_web_link'] = req.body.linkImg
+    }else{
+        req.body['cld_list_img_url'] = null
+      req.body['cld_list_img_path'] = null
+      req.body['list_img_web_link'] = null
     }
     const created = await createListRecord(req.body, req.params.userid)
     res.status(200).json(created)

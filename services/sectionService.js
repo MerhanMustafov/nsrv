@@ -25,7 +25,18 @@ async function getAll(ownerid){
 
 async function deleteOne(id){
     try{    
+        // const section = await Section.find({_id: id})
+        // for (let i = 0; i < section.lists; i++){
+        //     await List.findByIdAndDelete(listid)
+        // }
+        // section.lists = []
+        // await section.save()
         const deleted = await Section.findByIdAndDelete(id)
+        if(deleted.lists > 0){
+            for (let i = 0; i < deleted.lists.length; i++){
+                await List.findByIdAndDelete(deleted.lists[i])
+            }
+        }
         return deleted
     }catch (err) {
         throw new Error(err.message)
