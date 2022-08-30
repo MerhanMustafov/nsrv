@@ -53,7 +53,7 @@ async function deleteOne(id){
                 await List.findByIdAndDelete(section.lists[i])
             }
         }
-        const deleted = findByIdAndDelete(id)
+        const deleted = await Section.findByIdAndDelete(id)
         return deleted
     }catch (err) {
         throw new Error(err.message)
