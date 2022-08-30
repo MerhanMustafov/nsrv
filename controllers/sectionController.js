@@ -46,7 +46,6 @@ route.get(`/get/byname/:sectionname`, async (req, res) => {
 route.delete('/delete/:id', async (req, res) => {
     try{
         const deleted = await api.deleteOne(req.params.id)
-        console.log(deleted)
         res.status(200).json(deleted)
     }catch (err) {
         const error = { error: err.message }

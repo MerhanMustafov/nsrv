@@ -41,15 +41,22 @@ async function getByName(sectionname){
 
 async function deleteOne(id){
     try{    
-        // const section = await Section.find({_id: id})
-        // for (let i = 0; i < section.lists; i++){
-        //     await List.findByIdAndDelete(listid)
-        // }
-        // section.lists = []
-        // await section.save()
         const section = await Section.findById(id)
-        if(section.lists > 0){
+        if(section.lists.length > 0){
             for (let i = 0; i < section.lists.length; i++){
+                const list = await List.findById(section.lists[i])
+                if(list.notes.length > 0){
+                    for (let i = 0; i < list.notes.length; i++){
+                        const note = await Note.findById(list.notes[i])
+                        if(note.comments.length > 0){
+                            for (let i = 0; i < note.comments.length; i++){
+                                await Comment.findByIdAndDelete(note.comments[i])
+                            }
+                        }
+                        await Note.findByIdAndDelete(list.notes[i])
+                        
+                    }
+                }
                 await List.findByIdAndDelete(section.lists[i])
             }
         }
