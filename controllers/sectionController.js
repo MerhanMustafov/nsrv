@@ -32,6 +32,16 @@ route.get(`/get/one/:sectionid`, async (req, res) => {
         res.status(400).json(error)
     }
 })
+route.get(`/get/byname/:sectionname`, async (req, res) => {
+    try{
+        const section = await api.getByName(req.params.sectionname)
+        console.log(section, 'byname')
+        res.status(200).json(section)
+    }catch (err) {
+        const error = {error: err.message}
+        res.status(400).json(error)
+    }
+})
 
 route.delete('/delete/:id', async (req, res) => {
     try{

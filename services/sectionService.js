@@ -30,6 +30,14 @@ async function getOne(sectionid){
         throw new Error(err.message)
     }
 }
+async function getByName(sectionname){
+    try{
+        const section = await Section.findOne({sectionname}).populate({path: 'lists', populate: {path: 'notes', populate: {path: 'comments'}}})
+        return section
+    }catch (err) {
+        throw new Error(err.message)
+    }
+}
 
 async function deleteOne(id){
     try{    
@@ -39,15 +47,16 @@ async function deleteOne(id){
         // }
         // section.lists = []
         // await section.save()
-        const deleted = await Section.findByIdAndDelete(id)
-        if(deleted.lists > 0){
-            for (let i = 0; i < deleted.lists.length; i++){
-                await List.findByIdAndDelete(deleted.lists[i])
+        const section = await Section.findById(id)
+        if(section.lists > 0){
+            for (let i = 0; i < section.lists.length; i++){
+                await List.findByIdAndDelete(section.lists[i])
             }
         }
+        const deleted = findByIdAndDelete(id)
         return deleted
     }catch (err) {
         throw new Error(err.message)
     }
 }
-module.exports = {createSection, getAll, getOne, deleteOne}
+module.exports = {createSection, getAll, getByName, getOne, deleteOne}

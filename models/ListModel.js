@@ -7,6 +7,7 @@ const listSchema = new Schema({
     list_img_web_link: {type: String},
     ownerid: {type: String, required: true},
     sectionid: {type: String},
+    sectionname: {type: String},
     notes: [{type: Schema.Types.ObjectId, ref: 'Note'}],
 
 })
