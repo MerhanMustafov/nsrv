@@ -8,10 +8,10 @@ async function createListRecord(noteData, userid) {
   try {
     const list = new List(noteData)
     await list.save()
-    
-    const section = await Section.findById(list.sectionid)
-    section.lists.push(list._id)
-    await section.save()
+
+    // const section = await Section.findById(list.sectionid)
+    // section.lists.push(list._id)
+    // await section.save()
 
     const user = await User.findById(userid)
     user.lists.push(list._id)
