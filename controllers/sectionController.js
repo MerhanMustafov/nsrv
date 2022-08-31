@@ -2,10 +2,8 @@ const route = require('express').Router()
 const api = require('../services/sectionService')
 route.post('/create', async (req, res) => {
     const data = req.body
-    console.log(data)
     try{    
         const created = await api.createSection(data)
-        console.log(created)
         res.status(200).json(created)
     }catch (err) {
         const error = {error: err.message}
@@ -35,7 +33,6 @@ route.get(`/get/one/:sectionid`, async (req, res) => {
 route.get(`/get/byname/:sectionname`, async (req, res) => {
     try{
         const section = await api.getByName(req.params.sectionname)
-        console.log(section, 'byname')
         res.status(200).json(section)
     }catch (err) {
         const error = {error: err.message}
