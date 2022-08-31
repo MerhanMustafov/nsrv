@@ -2,6 +2,7 @@ const Section = require('../models/SectionModel')
 const List = require('../models/ListModel')
 const Note = require('../models/NoteModel')
 const Comment = require('../models/CommentModel')
+const cldService = require('../controllers/coudinary/cloudinaryService')
 
 
 async function createSection(data){
@@ -39,9 +40,10 @@ async function getByName(sectionname){
     }
 }
 
-async function deleteOne(id){
+async function deleteOne(req){
+    const id = req.params.id
     try{    
-        const section = await Section.findById(id)
+        const section = await Section.findById(id).populate('lists')
         if(section.lists.length > 0){
             for (let i = 0; i < section.lists.length; i++){
                 const list = await List.findById(section.lists[i])
@@ -57,7 +59,10 @@ async function deleteOne(id){
                         
                     }
                 }
-                await List.findByIdAndDelete(section.lists[i])
+                const deleted = await List.findByIdAndDelete(section.lists[i])
+                if(deleted.cld_list_img_path){
+                    await cldService.del(req, deleted)
+                }
             }
         }
         const deleted = await Section.findByIdAndDelete(id)
