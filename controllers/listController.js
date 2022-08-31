@@ -21,6 +21,10 @@ route.post('/create/:userid', async (req, res) => {
       req.body['cld_list_img_url'] = null
       req.body['cld_list_img_path'] = null
       req.body['list_img_web_link'] = req.body.linkImg
+    }else{
+        req.body['cld_list_img_url'] = null
+      req.body['cld_list_img_path'] = null
+      req.body['list_img_web_link'] = null
     }
     const created = await createListRecord(req.body, req.params.userid)
     res.status(200).json(created)
@@ -61,9 +65,9 @@ route.put('/update/:listid', async (req, res) => {
   }
 })
 
-route.delete('/delete/:listid/:userid', async (req, res) => {
+route.delete('/delete/:listid/:userid/:sectionid', async (req, res) => {
   try {
-    const deleted = await deleteList(req.params.listid, req.params.userid)
+    const deleted = await deleteList(req.params.listid, req.params.userid, req.params.sectionid)
     if (deleted.cld_list_img_path) {
       await cldService.del(req, deleted)
       // await deleteImageFromCloudinary(req.cld, deleted.cld_list_img_path)

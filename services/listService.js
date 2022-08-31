@@ -1,12 +1,18 @@
 const User = require('../models/UserModel')
+const Section = require('../models/SectionModel')
 const List = require('../models/ListModel')
 const Note = require('../models/NoteModel')
 const Comment = require('../models/CommentModel')
 
-async function createListRecord(noteData, userid) {
+async function createListRecord(listData, userid) {
   try {
-    const list = new List(noteData)
+    const list = new List(listData)
     await list.save()
+
+    const section = await Section.findById(list.sectionid)
+    section.lists.push(list._id)
+    await section.save()
+
     const user = await User.findById(userid)
     user.lists.push(list._id)
     await user.save()
@@ -42,12 +48,17 @@ async function updateListTitle(newData, listid) {
   }
 }
 
-async function deleteList(listid, userid) {
+async function deleteList(listid, userid, sectionid) {
   try {
     const user = await User.findById(userid)
     const filtered = user.lists.filter((id) => id.toString() !== listid)
     user.lists = filtered
     await user.save()
+
+    const section = await Section.findById(sectionid)
+    const filteredd = section.lists.filter((id) => id.toString() !== listid)
+    section.lists = filteredd
+    await section.save()
 
     const list = await List.findById(listid)
 

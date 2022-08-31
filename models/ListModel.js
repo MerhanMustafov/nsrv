@@ -6,6 +6,8 @@ const listSchema = new Schema({
     cld_list_img_path: {type: String},
     list_img_web_link: {type: String},
     ownerid: {type: String, required: true},
+    sectionid: {type: String},
+    sectionname: {type: String},
     notes: [{type: Schema.Types.ObjectId, ref: 'Note'}],
 
 })
